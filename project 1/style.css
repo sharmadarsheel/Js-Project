@@ -1,0 +1,20 @@
+ul{
+    list-style: none;
+    padding: 0;
+}
+    li{
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        border: 2px solid blueviolet;
+        border-radius: 10px;
+        padding: 10px;
+        margin: 10px;
+        
+    }
+
+    button{
+        color: cadetblue;
+        margin-left: auto;
+        cursor: pointer;
+    }
