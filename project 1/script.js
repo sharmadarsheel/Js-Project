@@ -10,44 +10,46 @@ addTaskButton.addEventListener("click", () => {
         return;
     }
 
-    // Create list item
+    addTask(input);
+    taskInput.value = "";
+});
+
+function addTask(taskText) {
+
+    // Create <li>
     const newTask = document.createElement("li");
 
-    // Create checkbox
+    // Checkbox
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
 
-    // Create task text
+    // Text
     const text = document.createElement("span");
-    text.textContent = input;
+    text.textContent = taskText;
 
-    // Create delete button
+    // Delete button
     const deleteButton = document.createElement("button");
     deleteButton.textContent = "Delete";
-    deleteButton.style.backgroundColor = "red";
 
-    // Add elements inside <li>
+    // Append elements inside li
     newTask.appendChild(checkbox);
     newTask.appendChild(text);
     newTask.appendChild(deleteButton);
 
-    // Add <li> to <ul>
+    // Append li to ul
     taskList.appendChild(newTask);
 
-    // Delete task
+    // Delete functionality
     deleteButton.addEventListener("click", () => {
         newTask.remove();
     });
 
+    // Checkbox functionality
     checkbox.addEventListener("change", () => {
-
-    if (checkbox.checked === true) {
-        text.style.textDecoration = "line-through"
-    } else {
-       text.style.textDecoration = "none"
-    }
-
-});
-    // Clear input
-    taskInput.value = "";
-});
+        if (checkbox.checked) {
+            text.style.textDecoration = "line-through";
+        } else {
+            text.style.textDecoration = "none";
+        }
+    });
+}
