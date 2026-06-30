@@ -2,54 +2,73 @@ const taskInput = document.getElementById("taskInput");
 const addTaskButton = document.getElementById("addTaskButton");
 const taskList = document.getElementById("taskList");
 
+let tasks = loadTasks();
+renderTasks();
+
 addTaskButton.addEventListener("click", () => {
     const input = taskInput.value.trim();
 
-    if (input === "") {
-        console.log("Please enter a task");
-        return;
-    }
+    if (input === "") return;
 
-    addTask(input);
+    tasks.push(input);
+    saveTasks();
+    renderTasks();
+
     taskInput.value = "";
 });
 
-function addTask(taskText) {
+function renderTasks() {
+    taskList.innerHTML = "";
 
-    // Create <li>
-    const newTask = document.createElement("li");
+    tasks.forEach((task, index) => {
+        const li = document.createElement("li");
 
-    // Checkbox
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
+        // checkbox
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
 
-    // Text
-    const text = document.createElement("span");
-    text.textContent = taskText;
+        // text
+        const span = document.createElement("span");
+        span.textContent = task + " ";
 
-    // Delete button
-    const deleteButton = document.createElement("button");
-    deleteButton.textContent = "Delete";
+        // delete button
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete";
 
-    // Append elements inside li
-    newTask.appendChild(checkbox);
-    newTask.appendChild(text);
-    newTask.appendChild(deleteButton);
+        // checkbox logic
+        checkbox.addEventListener("change", () => {
+            if (checkbox.checked) {
+                span.style.textDecoration = "line-through";
+            } else {
+                span.style.textDecoration = "none";
+            }
+        });
 
-    // Append li to ul
-    taskList.appendChild(newTask);
+        // delete logic
+        deleteButton.addEventListener("click", () => {
+            tasks.splice(index, 1);
+            saveTasks();
+            renderTasks();
+        });
 
-    // Delete functionality
-    deleteButton.addEventListener("click", () => {
-        newTask.remove();
+        // append order
+        li.appendChild(checkbox);
+        li.appendChild(span);
+        li.appendChild(deleteButton);
+
+        taskList.appendChild(li);
     });
+}
 
-    // Checkbox functionality
-    checkbox.addEventListener("change", () => {
-        if (checkbox.checked) {
-            text.style.textDecoration = "line-through";
-        } else {
-            text.style.textDecoration = "none";
-        }
-    });
+
+function saveTasks() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+function loadTasks() {
+    const data = localStorage.getItem("tasks");
+
+    if (data === null) return [];
+
+    return JSON.parse(data);
 }
